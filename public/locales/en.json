@@ -3453,7 +3453,6 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
       "noPosts": "No posts yet",
       "posts": "Posts",
       "state": "State",
@@ -3462,6 +3461,7 @@
     },
     "blogEdit": {
       "category": "Category",
+      "content": "Content",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",

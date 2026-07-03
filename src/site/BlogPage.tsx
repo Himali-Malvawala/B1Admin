@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Card, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { Add as AddIcon, Article as ArticleIcon, Delete as DeleteIcon, Edit as EditIcon, RssFeed as RssFeedIcon, Notes as NotesIcon } from "@mui/icons-material";
+import { Add as AddIcon, Article as ArticleIcon, Delete as DeleteIcon, Edit as EditIcon, RssFeed as RssFeedIcon } from "@mui/icons-material";
 import { ApiHelper, PageHeader, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
-import { useNavigate } from "react-router-dom";
 import { BlogPostEdit } from "./components";
 import { PermissionDenied } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
@@ -12,7 +11,6 @@ import type { PostInterface } from "../helpers/Interfaces";
 
 export const BlogPage = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const [posts, setPosts] = useState<PostInterface[]>([]);
   const [editPost, setEditPost] = useState<PostInterface | null>(null);
   const [deletePost, setDeletePost] = useState<PostInterface | null>(null);
@@ -26,11 +24,7 @@ export const BlogPage = () => {
   const handleDelete = () => {
     const p = deletePost;
     if (!p?.id) return;
-    ApiHelper.delete("/posts/" + p.id, "ContentApi").then(() => {
-      const after = () => { setDeletePost(null); loadData(); };
-      if (p.pageId) ApiHelper.delete("/pages/" + p.pageId, "ContentApi").then(after).catch(after);
-      else after();
-    });
+    ApiHelper.delete("/posts/" + p.id, "ContentApi").then(() => { setDeletePost(null); loadData(); });
   };
 
   const formatDate = (value: Date | string | null): string => {
@@ -90,7 +84,6 @@ export const BlogPage = () => {
                       <TableCell>
                         <Stack direction="row">
                           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditPost(post)} data-testid="edit-post-button" />
-                          <AppIconButton label={Locale.label("site.blog.editContent")} icon={<NotesIcon />} onClick={() => post.pageId && navigate("/site/pages/preview/" + post.pageId)} data-testid="edit-post-content-button" />
                           <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => setDeletePost(post)} data-testid="delete-post-button" />
                         </Stack>
                       </TableCell>
